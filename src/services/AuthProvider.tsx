@@ -1,14 +1,15 @@
-import axios from "axios";
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   User,
   UserCredential,
 } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth/web-extension";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import auth from "./../config/firebase.config";
 export const AuthContext = createContext<AuthContextType | null>(null);
 interface Props {
@@ -42,30 +43,34 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     return await signInWithEmailAndPassword(auth, email, password);
   };
 
+  const logOut = async () => {
+    return await signOut(auth);
+  };
+
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       setLoading(false);
-      if (currentUser) {
-        const user = { email: currentUser.email };
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_SERVER_API}/auth`,
-          user,
-          {
-            withCredentials: true,
-          }
-        );
-        return data;
-      } else {
-        const { data } = await axios.post(
-          `${import.meta.env.VITE_SERVER_API}/logout`,
-          user,
-          {
-            withCredentials: true,
-          }
-        );
-        return data;
-      }
+      // if (currentUser) {
+      //   const user = { email: currentUser.email };
+      //   const { data } = await axios.post(
+      //     `${import.meta.env.VITE_SERVER_API}/auth`,
+      //     user,
+      //     {
+      //       withCredentials: true,
+      //     }
+      //   );
+      //   return data;
+      // } else {
+      //   const { data } = await axios.post(
+      //     `${import.meta.env.VITE_SERVER_API}/logout`,
+      //     user,
+      //     {
+      //       withCredentials: true,
+      //     }
+      //   );
+      //   return data;
+      // }
     });
     return () => unSubscribe();
   }, [user]);
@@ -76,9 +81,13 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     googleLogin,
     emailPasswordRegister,
     emailPasswordLogin,
+    logOut,
   };
   return (
-    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={authInfo}>
+      {children}
+      <Toaster />
+    </AuthContext.Provider>
   );
 };
 

@@ -1,13 +1,11 @@
-import { User } from "firebase/auth";
 import { useContext } from "react";
 import { AuthContext } from "../services/AuthProvider";
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-}
-const useAuth = (): AuthContextType | null => {
-  const auth = useContext(AuthContext);
 
+const useAuth = () => {
+  const auth = useContext(AuthContext);
+  if (!auth) {
+    throw new Error("Auth Context is Not Available!");
+  }
   return auth;
 };
 

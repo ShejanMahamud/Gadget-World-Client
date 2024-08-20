@@ -1,24 +1,40 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BsFillLockFill } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
 import { MdEmail } from "react-icons/md";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Login: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { googleLogin } = useAuth();
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const handleGoogleLogin = () => {
-    // Handle Google login logic here
-    console.log("Google Login Clicked");
+  const handleGoogleLogin = async () => {
+    try {
+      await googleLogin();
+      toast.success("Successfully Logged In!");
+      setTimeout(() => {
+        navigate(location?.state || "/");
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong!");
+    }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 py-12">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center uppercase text-primary">
+          Login
+        </h2>
         <form>
           <div className="mb-6">
             <label className="block text-sm font-medium mb-2" htmlFor="email">
@@ -66,23 +82,27 @@ const Login: React.FC = () => {
           >
             Login
           </button>
-
+          <h1 className="text-center mt-2 text-sm">
+            Not Registered?{" "}
+            <span
+              onClick={() => navigate("/register")}
+              className="hover:underline decoration-primary underline-offset-4 text-primary"
+            >
+              Register Here
+            </span>
+          </h1>
           <div className="my-6 flex items-center justify-center">
-            <hr className="w-1/3" />
+            <hr className="w-1/3 border border-gray-200" />
             <span className="mx-4 text-gray-600">or</span>
-            <hr className="w-1/3" />
+            <hr className="w-1/3 border border-gray-200" />
           </div>
 
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className="w-full py-2 px-4 border border-gray-300 text-gray-800 font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full py-2 px-4 border border-gray-300 text-gray-800 font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase"
           >
-            <img
-              src="https://www.gstatic.com/firebasejs/9.17.1/icons/google.svg"
-              alt="Google"
-              className="w-5 h-5"
-            />
+            <FcGoogle className="text-xl" />
             Login with Google
           </button>
         </form>
