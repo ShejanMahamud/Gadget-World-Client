@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   });
   const [sort, setSort] = useState<string | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(12); // Default page size
+  const [pageSize, setPageSize] = useState<number>(10); // Default page size
 
   useEffect(() => {
     const getProduct = async () => {
@@ -60,9 +60,20 @@ const Home: React.FC = () => {
           `https://gadget-world-server-gamma.vercel.app/products?${queryParams.toString()}`
         );
         const data = await res.json();
-
+        console.log(data);
         setProducts(data.data);
-        setTotal(data.total);
+        if (
+          search ||
+          category ||
+          brand ||
+          priceRange.maxPrice !== null ||
+          priceRange.minPrice !== null ||
+          sort
+        ) {
+          return setTotal(data.totalFilteredProducts);
+        } else {
+          return setTotal(data.total);
+        }
       } catch (error) {
         console.log("Error fetching products:", error);
       }
@@ -101,22 +112,24 @@ const Home: React.FC = () => {
     <div>
       <HeroSection backgroundImage="https://i.ibb.co/Rj3wWsm/ardi-evans-Ams-UQb-D5b-T0-unsplash.jpg" />
 
-      <div className="px-20 py-10">
-        <div className="flex flex-col md:flex-row justify-between mb-8">
+      <div className="lg:px-20 px-10 py-10">
+        <div className="flex flex-col md:flex-row justify-between mb-8 gap-4 p-4 bg-white rounded-lg shadow-lg">
+          {/* Search Input */}
           <Input
             placeholder="Search for products"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="mb-4 md:mb-0"
+            className="w-full md:w-1/4 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
           />
 
-          <div className="flex flex-col md:flex-row gap-4 mb-4">
+          <div className="flex flex-col md:flex-row gap-4 w-full md:w-3/4">
+            {/* Category Select */}
             <Select
               placeholder="Select Category"
               onChange={(value) =>
                 setCategory(value === "" ? undefined : value)
               }
-              className="w-full md:w-1/3"
+              className="w-full md:w-1/4 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             >
               <Option value="">All Categories</Option>
               {categories &&
@@ -127,25 +140,27 @@ const Home: React.FC = () => {
                 ))}
             </Select>
 
+            {/* Brand Select */}
             <Select
               placeholder="Select Brand"
               onChange={(value) => setBrand(value === "" ? undefined : value)}
-              className="w-full md:w-1/3"
+              className="w-full md:w-1/4 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
             >
+              <Option value="">All Brands</Option>
               {brands &&
                 brands.map((brand) => (
                   <Option key={brand} value={brand}>
                     {brand}
                   </Option>
                 ))}
-              <Option value="">All Brands</Option>
             </Select>
 
+            {/* Min Price Input */}
             <Input
-              className="w-[200px]"
+              className="w-full md:w-1/4 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
               placeholder="Min Price"
-              type="number" // Ensure that the input is of type number
-              value={priceRange.minPrice ?? ""} // Use '' for empty cases
+              type="number"
+              value={priceRange.minPrice ?? ""}
               onChange={(e) => {
                 const value = e.target.value;
                 setPriceRange((prev) => ({
@@ -154,11 +169,13 @@ const Home: React.FC = () => {
                 }));
               }}
             />
+
+            {/* Max Price Input */}
             <Input
-              className="w-[200px]"
+              className="w-full md:w-1/4 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
               placeholder="Max Price"
-              type="number" // Ensure that the input is of type number
-              value={priceRange.maxPrice ?? ""} // Use '' for empty cases
+              type="number"
+              value={priceRange.maxPrice ?? ""}
               onChange={(e) => {
                 const value = e.target.value;
                 setPriceRange((prev) => ({
@@ -169,10 +186,11 @@ const Home: React.FC = () => {
             />
           </div>
 
+          {/* Sort By Select */}
           <Select
             placeholder="Sort by"
             onChange={(value) => setSort(value)}
-            className="w-full md:w-1/3"
+            className="w-full md:w-1/4 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
           >
             <Option value="price-asc">Price: Low to High</Option>
             <Option value="price-desc">Price: High to Low</Option>

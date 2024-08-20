@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
         <div>
           <img
             onClick={() => setMenuOpen(!menuOpen)}
-            src={user?.photoURL}
+            src={"/user.png"}
             alt=""
             className="h-12 object-cover w-12 cursor-pointer"
           />

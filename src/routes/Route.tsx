@@ -5,11 +5,16 @@ import Register from "../pages/Auth/Register";
 import Error from "../pages/Error";
 import Home from "../pages/Home";
 import ProductDetails from "../pages/ProductDetails";
+import PrivateRoute from "./PrivateRoute";
 
 const Route = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: (
+      <PrivateRoute>
+        <RootLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/",

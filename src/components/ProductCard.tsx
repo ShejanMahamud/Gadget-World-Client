@@ -76,7 +76,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </p>{" "}
         {/* Truncate description */}
         {/* Price and Add to Cart Button */}
-        <div className="mt-4 flex justify-between items-center">
+        <div className="mt-4 flex justify-between items-center lg:flex-row flex-col gap-y-5">
           <div>
             {/* Discounted Price */}
             <span className="text-primary font-bold text-lg">

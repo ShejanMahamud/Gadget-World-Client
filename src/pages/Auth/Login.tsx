@@ -11,7 +11,7 @@ const Login: React.FC = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { googleLogin } = useAuth();
+  const { googleLogin, emailPasswordLogin } = useAuth();
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -29,13 +29,31 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const form = e.target;
+      const email = form.email.value;
+      const password = form.password.value;
+      await toast.promise(emailPasswordLogin(email, password), {
+        loading: "Authenticating Your Credentials...",
+        success: "Successfully Logged In!",
+        error: "Failed To Authenticate",
+      });
+      navigate("/");
+      return;
+    } catch (error) {
+      toast.error("Something Went Wrong!");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 py-12">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-bold mb-6 text-center uppercase text-primary">
           Login
         </h2>
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="mb-6">
             <label className="block text-sm font-medium mb-2" htmlFor="email">
               <MdEmail className="inline-block mr-2" /> Email
