@@ -13,7 +13,6 @@ interface ProductCardProps {
   brand: string;
   creation_time: string;
   discount?: number; // Optional discount percentage
-  onAddToCart: () => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -24,7 +23,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
   price,
   rating,
   discount = 0,
-  onAddToCart,
 }) => {
   // Calculate discounted price
   const priceNumber = parseFloat(price);
@@ -91,10 +89,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           {/* Add to Cart Button */}
-          <button
-            onClick={onAddToCart}
-            className="flex items-center px-3 py-2 bg-primary text-white text-sm font-semibold rounded hover:bg-primary-dark transition duration-300"
-          >
+          <button className="flex items-center px-3 py-2 bg-primary text-white text-sm font-semibold rounded hover:bg-primary-dark transition duration-300">
             <FaShoppingCart className="mr-2" />
             Add to Cart
           </button>

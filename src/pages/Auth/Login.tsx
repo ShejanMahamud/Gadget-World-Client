@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BsFillLockFill } from "react-icons/bs";
@@ -29,19 +29,23 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
-      const form = e.target;
-      const email = form.email.value;
-      const password = form.password.value;
+      const form = e.target as HTMLFormElement;
+      const email = (form.elements.namedItem("email") as HTMLInputElement)
+        .value;
+      const password = (form.elements.namedItem("password") as HTMLInputElement)
+        .value;
+
       await toast.promise(emailPasswordLogin(email, password), {
         loading: "Authenticating Your Credentials...",
         success: "Successfully Logged In!",
         error: "Failed To Authenticate",
       });
+
       navigate("/");
-      return;
     } catch (error) {
       toast.error("Something Went Wrong!");
     }

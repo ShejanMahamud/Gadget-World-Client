@@ -1,8 +1,8 @@
-import { DatePicker, Input, Pagination, Select } from "antd";
+import { Input, Pagination, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import HeroSection from "../components/HeroSection";
+import LoadingSpinner from "../components/LoadingSpinner";
 import ProductCard from "../components/ProductCard";
-const { RangePicker } = DatePicker;
 interface Product {
   id: string;
   name: string;
@@ -19,8 +19,8 @@ const { Option } = Select;
 
 const Home: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [minPrice, setMinPrice] = useState<number | null>(null);
-  const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
   const [total, setTotal] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [category, setCategory] = useState<string | undefined>(undefined);
@@ -55,13 +55,14 @@ const Home: React.FC = () => {
         if (sort) queryParams.append("sortBy", sort);
         queryParams.append("page", currentPage.toString());
         queryParams.append("limit", pageSize.toString());
-
+        setLoading(true);
         const res = await fetch(
           `https://gadget-world-server-gamma.vercel.app/products?${queryParams.toString()}`
         );
         const data = await res.json();
-        console.log(data);
+
         setProducts(data.data);
+        setLoading(false);
         if (
           search ||
           category ||
@@ -107,6 +108,10 @@ const Home: React.FC = () => {
     getCategories();
     getBrands();
   }, [search, category, brand, priceRange, sort, currentPage, pageSize]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div>
@@ -230,7 +235,7 @@ const Home: React.FC = () => {
             total={total}
             onChange={(page) => setCurrentPage(page)}
             showSizeChanger
-            onShowSizeChange={(current, size) => setPageSize(size)}
+            onShowSizeChange={(_, size) => setPageSize(size)}
           />
         </div>
       </div>

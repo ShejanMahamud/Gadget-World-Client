@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
     try {
       await logOut();
       toast.success("Successfully logged out!");
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Something went wrong!");
     }
   };

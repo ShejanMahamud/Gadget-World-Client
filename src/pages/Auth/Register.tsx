@@ -27,13 +27,18 @@ const Register: React.FC = () => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).*$/;
 
     const form = e.target as HTMLFormElement;
-    const name = form.name.value;
-    const username = form.username.value;
-    const email = form.email.value;
-    const password = form.password.value;
-    const confirmPassword = form.confirmPassword.value;
-    const terms = form.terms.checked;
-    const phone_number = form.phone.value;
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const username = (form.elements.namedItem("username") as HTMLInputElement)
+      .value;
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const password = (form.elements.namedItem("password") as HTMLInputElement)
+      .value;
+    const confirmPassword = (
+      form.elements.namedItem("confirmPassword") as HTMLInputElement
+    ).value;
+    const terms = (form.elements.namedItem("terms") as HTMLInputElement)
+      .checked;
+    // const phone_number = (form.elements.namedItem("phone") as HTMLInputElement).value;
 
     if (!terms) {
       return toast.error("Please Accept Terms & Services!");
