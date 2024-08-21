@@ -42,7 +42,6 @@ const Home: React.FC = () => {
     const getProduct = async () => {
       try {
         const queryParams = new URLSearchParams();
-
         if (search) queryParams.append("search", search);
         if (category) queryParams.append("category", category);
         if (brand) queryParams.append("brand", brand);
