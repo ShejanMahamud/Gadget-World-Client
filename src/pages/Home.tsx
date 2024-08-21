@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import HeroSection from "../components/HeroSection";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ProductCard from "../components/ProductCard";
+import { ScrollRestoration } from "react-router-dom";
 interface Product {
   id: string;
   name: string;
@@ -235,6 +236,7 @@ const Home: React.FC = () => {
           />
         </div>
       </div>
+      <ScrollRestoration />
     </div>
   );
 };
