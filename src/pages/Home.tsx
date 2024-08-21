@@ -118,7 +118,7 @@ const Home: React.FC = () => {
 
       <div className="lg:px-20 px-10 py-10">
         <div className="flex flex-col md:flex-row justify-between mb-8 gap-4 p-4 bg-white rounded-lg shadow-lg">
-          {/* Search Input */}
+          
           <Input
             placeholder="Search for products"
             value={search}
