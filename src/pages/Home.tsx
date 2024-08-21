@@ -126,7 +126,7 @@ const Home: React.FC = () => {
           />
 
           <div className="flex flex-col md:flex-row gap-4 w-full md:w-3/4">
-            {/* Category Select */}
+            
             <Select
               placeholder="Select Category"
               onChange={(value) =>
