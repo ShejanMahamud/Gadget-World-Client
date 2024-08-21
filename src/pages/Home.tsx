@@ -36,7 +36,7 @@ const Home: React.FC = () => {
   });
   const [sort, setSort] = useState<string | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(10); // Default page size
+  const [pageSize, setPageSize] = useState<number>(10);
 
   useEffect(() => {
     const getProduct = async () => {
