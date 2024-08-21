@@ -59,7 +59,6 @@ const Home: React.FC = () => {
           `https://gadget-world-server-gamma.vercel.app/products?${queryParams.toString()}`
         );
         const data = await res.json();
-
         setProducts(data.data);
         setLoading(false);
         if (
