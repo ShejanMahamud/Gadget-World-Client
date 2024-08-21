@@ -224,8 +224,6 @@ const Home: React.FC = () => {
             </div>
           )}
         </div>
-
-        {/* Pagination */}
         <div className="mt-8 flex justify-center">
           <Pagination
             current={currentPage}
