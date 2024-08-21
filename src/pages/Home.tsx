@@ -55,7 +55,6 @@ const Home: React.FC = () => {
         if (sort) queryParams.append("sortBy", sort);
         queryParams.append("page", currentPage.toString());
         queryParams.append("limit", pageSize.toString());
-        setLoading(true);
         const res = await fetch(
           `https://gadget-world-server-gamma.vercel.app/products?${queryParams.toString()}`
         );
